@@ -6,5 +6,12 @@
   - include: tasks/apt.yml
   - name: install docker
     apt: name=docker.io
+    notify:
+    - restart docker.io
+  - name: Make sure that docker starts at boot
+    service: name=docker.io enabled=yes
+  handlers:
+      - name: restart docker.io
+        service: name=docker.io state=restart
 
 # vim:ft=ansible:
