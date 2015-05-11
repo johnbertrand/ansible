@@ -1,0 +1,10 @@
+---
+- hosts: docker
+  remote_user: ubuntu
+  sudo: yes
+  tasks:
+  - include: tasks/apt.yml
+  - name: install docker
+    apt: name=docker.io
+
+# vim:ft=ansible:
