@@ -1,0 +1,35 @@
+- name: Create Security Group
+  local_action:
+    module: ec2_group
+    name: default_security_policy
+    description: Default Policy for Instances
+    region: "{{ region }}"
+    rules:
+      - proto: tcp
+        from_port: 22
+        to_port: 22
+        cidr_ip: 172.31.0.0/16
+
+- name: Launch Instance
+  local_action:
+    module: ec2
+    region: "{{ region }}"
+    keypair: john.bertrand.aws
+    group: default_security_policy
+    instance_type: "{{ instance_type }}"
+    image: "{{ compute_image }}"
+    count: 1
+    wait: yes
+    instance_tags:
+      Name: "{{ instance_tag_name }}"
+  register: ec2
+
+- name: Add all instances public IPs to host group
+  add_host: hostname={{ item.private_ip }} groups=newinstances
+  with_items: ec2.instances
+
+- name: Wait for the instances to spin up 
+  pause: minutes=2
+      
+
+# vim:ft=ansible:

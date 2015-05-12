@@ -1,0 +1,11 @@
+---
+- name: install docker
+  apt: name=docker.io
+  notify:
+    - restart docker.io
+
+- name: Make sure that docker starts at boot
+  service: name=docker.io enabled=yes
+  
+
+# vim:ft=ansible:
