@@ -14,7 +14,7 @@
   local_action:
     module: ec2
     region: "{{ region }}"
-    keypair: john.bertrand.aws
+    keypair: "{{ keypair }}"
     group: default_security_policy
     instance_type: "{{ instance_type }}"
     image: "{{ compute_image }}"
